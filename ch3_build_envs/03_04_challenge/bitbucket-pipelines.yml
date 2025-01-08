@@ -1,0 +1,13 @@
+image: atlassian/default-image:4
+
+pipelines:
+  default:
+    - step:
+        name: Test Python
+        script:
+          - echo "Your Python tests go here"
+    - step:
+        name: Test Ruby
+        script:
+          - echo "Your Ruby tests go here"
+

@@ -1,0 +1,129 @@
+image: 'atlassian/default-image:3'
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Build and Test
+            script:
+              - echo "Your build and test goes here..."
+        - step:
+            name: Lint
+            script:
+              - echo "Your linting goes here..."
+        - step:
+            name: Security scan
+            script:
+              - echo "Your security scan goes here..."
+  branches:
+    feature/*:
+      - parallel:
+          - step:
+              name: Build and Test
+              script:
+                - echo "Your build and test goes here..."
+          - step:
+              name: Lint
+              script:
+                - echo "Your linting goes here..."
+          - step:
+              name: Security scan
+              script:
+                - echo "Your security scan goes here..."
+      - stage:
+          name: Staging
+          steps:
+            - step:
+                name: Set up Staging
+                script:
+                  - echo "set up staging deployment"
+            - step:
+                name: Deployment to Staging
+                deployment: staging
+                script:
+                  - echo "Your deployment to staging script goes here..."
+    main:
+      - parallel:
+          - step:
+              name: Build and Test
+              script:
+                - echo "Your build and test goes here..."
+          - step:
+              name: Lint
+              script:
+                - echo "Your linting goes here..."
+          - step:
+              name: Security scan
+              script:
+                - echo "Your security scan goes here..."
+      - stage:
+          name: Staging
+          steps:
+            - step:
+                name: Set up Staging
+                script:
+                  - echo "set up staging deployment"
+            - step:
+                name: Deployment to Staging
+                deployment: staging
+                script:
+                  - echo "Your deployment to staging script goes here..."
+                after-script:
+                  - echo "Clean up the deployment if anything fails..."
+      - stage:
+          name: Production
+          trigger: manual
+          steps:
+            - step:
+                name: Set up Production
+                script:
+                  - echo "set up production deployment"
+            - step:
+                name: Deployment to Production
+                deployment: production
+                script:
+                  - echo "Your deployment to production script goes here..."
+                after-script:
+                  - echo "Clean up the deployment if anything fails..."
+
+  pull-requests:
+    '**':
+      - parallel:
+          - step:
+              name: Build and Test
+              script:
+                - echo "Your build and test goes here..."
+          - step:
+              name: Lint
+              script:
+                - echo "Your linting goes here..."
+          - step:
+              name: Security scan
+              script:
+                - echo "Your security scan goes here..."
+      - stage:
+          name: Pull Request
+          steps:
+            - step:
+                name: Set up pull request tasks
+                script:
+                  - echo "PR task 1"
+                  - echo "PR task 2"
+            - step:
+                name: Complete pull request tasks
+                script:
+                  - echo "PR task 3"
+                  - echo "PR task 4"
+      - stage:
+          name: Staging
+          steps:
+            - step:
+                name: Set up Staging
+                script:
+                  - echo "set up staging deployment"
+            - step:
+                name: Deployment to Staging
+                deployment: staging
+                script:
+                  - echo "Your deployment to staging script goes here..."
+                after-script:
+                  - echo "Clean up the deployment if anything fails..."
